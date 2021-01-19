@@ -35,7 +35,7 @@ const checkEmail = (input=>{
 const checkRequired = (inputArr=>{
   inputArr.forEach((input=>{
     if(input.value.trim() === '' ){
-      showError(input,`${getFiredName(input)} is required`)
+      showError(input,`${getFieldName(input)} is required`)
     }else{
       showSuccess(input)
     }
@@ -46,16 +46,25 @@ const checkRequired = (inputArr=>{
 
 const checkLength = ((input,min,max)=>{
   if (input.value.length < min ) {
-    showError(input,`${getFiredName(input)} must be at least ${min}`)
+    showError(input,`${getFieldName(input)} must be at least ${min}`)
   }else if (input.value.length > max) {
-    showError(input,`${getFiredName(input)} must be less than ${max} characters`)
+    showError(input,`${getFieldName(input)} must be less than ${max} characters`)
   }else{
     showSuccess(input)
   }
 })
 
+
+// Check passwords match
+const checkPasswordsMatch = ((input1,input2)=>{
+  if (input1.value !== input2.value) {
+    showError(input2,'Passwords do not match')
+  }
+})
+
+
 // Get fieldname
-const getFiredName = (input=>{
+const getFieldName = (input=>{
   return input.id.charAt(0).toUpperCase()+input.id.slice(1);
 })
 
@@ -67,4 +76,5 @@ form.addEventListener('submit',(e)=>{
   checkLength(username,3,15)
   checkLength(password,6,25)
   checkEmail(email)
+  checkPasswordsMatch(password,confirmPassword)
 })

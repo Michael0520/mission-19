@@ -21,9 +21,13 @@ const showSuccess = (input=>{
 })
 
 // Check Email is valid
-const isValidEmail = (email=>{
+const checkEmail = (input=>{
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+  if (re.test(input.value.trim())) {
+    showSuccess(input)
+  } else {
+    showError(input, 'Email is not valid')
+  }
 })
 
 // Check require
@@ -31,20 +35,36 @@ const isValidEmail = (email=>{
 const checkRequired = (inputArr=>{
   inputArr.forEach((input=>{
     if(input.value.trim() === '' ){
-      showError(input,`${input.id} is required`)
+      showError(input,`${getFiredName(input)} is required`)
     }else{
       showSuccess(input)
     }
   }))
 })
 
+// Check input length
+
+const checkLength = ((input,min,max)=>{
+  if (input.value.length < min ) {
+    showError(input,`${getFiredName(input)} must be at least ${min}`)
+  }else if (input.value.length > max) {
+    showError(input,`${getFiredName(input)} must be less than ${max} characters`)
+  }else{
+    showSuccess(input)
+  }
+})
+
+// Get fieldname
+const getFiredName = (input=>{
+  return input.id.charAt(0).toUpperCase()+input.id.slice(1);
+})
+
+
 // Event Listener
 form.addEventListener('submit',(e)=>{
   e.preventDefault();
-  // checkRequired(username)
-  // checkRequired(email)
-  // checkRequired(password)
-  // checkRequired(confirmPassword)
   checkRequired([username,email,password,confirmPassword])
-
+  checkLength(username,3,15)
+  checkLength(password,6,25)
+  checkEmail(email)
 })

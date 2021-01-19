@@ -25,32 +25,26 @@ const isValidEmail = (email=>{
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 })
+
+// Check require
+
+const checkRequired = (inputArr=>{
+  inputArr.forEach((input=>{
+    if(input.value.trim() === '' ){
+      showError(input,`${input.id} is required`)
+    }else{
+      showSuccess(input)
+    }
+  }))
+})
+
 // Event Listener
 form.addEventListener('submit',(e)=>{
   e.preventDefault();
+  // checkRequired(username)
+  // checkRequired(email)
+  // checkRequired(password)
+  // checkRequired(confirmPassword)
+  checkRequired([username,email,password,confirmPassword])
 
-  if(username.value===''){
-    showError(username,'Username is required')
-  }else{
-    showSuccess(username);
-  }
-  if(email.value===''){
-    showError(email,'Email is required')
-  }else if (!isValidEmail(email.value)) {
-    showError(email,'Email is not valid')
-  }
-  else{
-    showSuccess(email);
-  }
-  if(password.value===''){
-    showError(password,'Password is required')
-  }else{
-    showSuccess(password);
-  }
-  if(confirmPassword.value===''){
-    showError(confirmPassword,'ConfirmPassword is required')
-  }else{
-    showSuccess(confirmPassword);
-  }
-  
 })
